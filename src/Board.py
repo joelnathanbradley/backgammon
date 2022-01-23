@@ -31,9 +31,7 @@ class Board:
 
     def has_checkers_on_bar(self, checker_color):
         assert(checker_color == self.checker_color1 or checker_color == self.checker_color2)
-        if self.bar[checker_color] > 0:
-            return True
-        return False
+        return self.bar[checker_color] > 0
 
     def has_all_checkers_home(self, checker_color):
         assert (checker_color == self.checker_color1 or checker_color == self.checker_color2)
@@ -45,15 +43,11 @@ class Board:
             if self.points[point].checker_color == checker_color:
                 total_checkers_home += self.points[point].checker_count
         total_checkers_home += self.total_off[checker_color]
-        if total_checkers_home != 15:
-            return False
-        return True
+        return not (total_checkers_home != 15)
 
     def is_winner(self, checker_color):
         assert (checker_color == self.checker_color1 or checker_color == self.checker_color2)
-        if self.total_off[checker_color] == 15:
-            return True
-        return False
+        return self.total_off[checker_color] == 15
 
     def can_take_off_bar(self, checker_color, point):
         assert(checker_color == self.checker_color1 or checker_color == self.checker_color2)
