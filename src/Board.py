@@ -79,6 +79,8 @@ class Board:
         if checker_color == self.checker_color1:
             spaces *= -1
         point_ahead = point + spaces
+        if point_ahead < 0 or point_ahead > 23:
+            return False
         if self.has_checkers_on_bar(checker_color):
             return False
         if not self.points[point].can_remove_checker(checker_color):
@@ -97,18 +99,28 @@ class Board:
         self.points[point].remove_checker(checker_color)
         self._hit_or_add_checker(checker_color, point_ahead)
 
-    def can_bear_off(self, checker_color, point):
+    def can_bear_off(self, checker_color, point, spaces):
         assert (checker_color == self.checker_color1 or checker_color == self.checker_color2)
-        assert (0 < point < 7)
+        assert (0 <= point < 24)
+        assert (0 < spaces < 7)
+        if checker_color == self.checker_color1:
+            spaces *= -1
+        point_ahead = point + spaces
+        if point_ahead >= 0 or point_ahead < 24:
+            return False
         if not self.has_all_checkers_home(checker_color):
             return False
-        # more code here to check if move has to be done first
+        if self.can_move(checker_color, point, spaces):
+            return False
+        if not self.points[point].can_remove_checker(checker_color):
+            return False
         return True
 
-    def bear_off(self, checker_color, point):
-        if not self.can_bear_off(checker_color, point):
+    def bear_off(self, checker_color, point, spaces):
+        if not self.can_bear_off(checker_color, point, spaces):
             raise RuntimeError("Cannot bear off checker")
-        # code here to bear off checker
+        self.points[point].remove_checker(checker_color)
+        self.total_off[checker_color] += 1
 
 
 if __name__ == "__main__":
