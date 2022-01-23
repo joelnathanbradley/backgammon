@@ -18,7 +18,7 @@ class Board:
         self.bar = {checker_color1: 0, checker_color2: 0}
         self.total_off = {checker_color1: 0, checker_color2: 0}
 
-    def __hit_or_add_checker(self, checker_color, point):
+    def _hit_or_add_checker(self, checker_color, point):
         if self.points[point].can_hit(checker_color):
             self.points[point].hit(checker_color)
             if checker_color == self.checker_color1:
@@ -26,6 +26,7 @@ class Board:
             else:
                 self.bar[self.checker_color1] += 1
         else:
+            assert self.points[point].can_add_checker(checker_color)
             self.points[point].add_checker(checker_color)
 
     def has_checkers_on_bar(self, checker_color):
@@ -75,7 +76,7 @@ class Board:
             point = 24 - point
         else:
             point -= 1
-        self.__hit_or_add_checker(checker_color, point)
+        self._hit_or_add_checker(checker_color, point)
 
     def can_move(self, checker_color, point, spaces):
         assert(checker_color == self.checker_color1 or checker_color == self.checker_color2)
@@ -100,7 +101,7 @@ class Board:
         point_ahead = point + spaces
         assert(0 <= point_ahead < 24)
         self.points[point].remove_checker(checker_color)
-        self.__hit_or_add_checker(checker_color, point_ahead)
+        self._hit_or_add_checker(checker_color, point_ahead)
 
     def can_bear_off(self, checker_color, point):
         assert (checker_color == self.checker_color1 or checker_color == self.checker_color2)
