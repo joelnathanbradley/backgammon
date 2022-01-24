@@ -18,6 +18,10 @@ class Board:
         self.bar = {checker_color1: 0, checker_color2: 0}
         self.total_off = {checker_color1: 0, checker_color2: 0}
 
+    def __str__(self):
+        # fill this in next time
+        return
+
     def _hit_or_add_checker(self, checker_color, point):
         if self.points[point].can_hit(checker_color):
             self.points[point].hit(checker_color)
@@ -95,7 +99,6 @@ class Board:
         if checker_color == self.checker_color1:
             spaces *= -1
         point_ahead = point + spaces
-        assert(0 <= point_ahead < 24)
         self.points[point].remove_checker(checker_color)
         self._hit_or_add_checker(checker_color, point_ahead)
 
@@ -121,7 +124,3 @@ class Board:
             raise RuntimeError("Cannot bear off checker")
         self.points[point].remove_checker(checker_color)
         self.total_off[checker_color] += 1
-
-
-if __name__ == "__main__":
-    Board("black", "white")
