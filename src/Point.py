@@ -4,6 +4,12 @@ class Point:
         self.checker_color = checker_color
         self.checker_count = checker_count
 
+    def __str__(self):
+        if self.checker_count != 0:
+            return str(self.checker_count) + self.checker_color[0]
+        else:
+            return "  "
+
     def can_add_checker(self, checker_color):
         if self.checker_color is None or self.checker_color == checker_color:
             return True

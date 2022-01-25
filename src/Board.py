@@ -18,10 +18,6 @@ class Board:
         self.bar = {checker_color1: 0, checker_color2: 0}
         self.total_off = {checker_color1: 0, checker_color2: 0}
 
-    def __str__(self):
-        # fill this in next time
-        return
-
     def _hit_or_add_checker(self, checker_color, point):
         if self.points[point].can_hit(checker_color):
             self.points[point].hit(checker_color)
@@ -124,3 +120,42 @@ class Board:
             raise RuntimeError("Cannot bear off checker")
         self.points[point].remove_checker(checker_color)
         self.total_off[checker_color] += 1
+
+    def __str__(self):
+        board_string = " 12 13 14 15 16 17    18 19 20 21 22 23 "
+        board_string += "\n|-----------------|--|-----------------|\n"
+        board_string += "|"
+        for i in range(12, 18):
+            board_string += str(self.points[i])
+            if i != 17:
+                board_string += " "
+        board_string += "|  |"
+        for i in range(18, 24):
+            board_string += str(self.points[i])
+            if i != 23:
+                board_string += " "
+        board_string += "|\n|\\/ \\/ \\/ \\/ \\/ \\/|  |\\/ \\/ \\/ \\/ \\/ \\/|\n"
+        board_string += "|                 |"
+        if self.bar[self.checker_color1] != 0:
+            board_string += str(self.bar[self.checker_color1]) + self.checker_color1[0]
+        else:
+            board_string += "  "
+        board_string += "|                 |\n|                 |"
+        if self.bar[self.checker_color2] != 0:
+            board_string += str(self.bar[self.checker_color2]) + self.checker_color2[0]
+        else:
+            board_string += "  "
+        board_string += "|                 |"
+        board_string += "\n|/\\ /\\ /\\ /\\ /\\ /\\|  |/\\ /\\ /\\ /\\ /\\ /\\|\n|"
+        for i in reversed(range(6, 12)):
+            board_string += str(self.points[i])
+            if i != 6:
+                board_string += " "
+        board_string += "|  |"
+        for i in reversed(range(0, 6)):
+            board_string += str(self.points[i])
+            if i != 0:
+                board_string += " "
+        board_string += "|\n|-----------------|--|-----------------|\n"
+        board_string += " 11 10 09 08 07 06    05 04 03 02 01 00 "
+        return board_string
