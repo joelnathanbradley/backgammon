@@ -8,12 +8,28 @@ class Board:
         self.checker_color2 = checker_color2
         self.points = [Point(None, 0)] * 24
         self.points[23] = Point(checker_color1, 2)
+        self.points[22] = Point(None, 0)
+        self.points[21] = Point(None, 0)
+        self.points[20] = Point(None, 0)
+        self.points[19] = Point(None, 0)
         self.points[18] = Point(checker_color2, 5)
+        self.points[17] = Point(None, 0)
         self.points[16] = Point(checker_color2, 3)
+        self.points[15] = Point(None, 0)
+        self.points[14] = Point(None, 0)
+        self.points[13] = Point(None, 0)
         self.points[12] = Point(checker_color1, 5)
         self.points[11] = Point(checker_color2, 5)
+        self.points[10] = Point(None, 0)
+        self.points[9] = Point(None, 0)
+        self.points[8] = Point(None, 0)
         self.points[7] = Point(checker_color1, 3)
+        self.points[6] = Point(None, 0)
         self.points[5] = Point(checker_color1, 5)
+        self.points[4] = Point(None, 0)
+        self.points[3] = Point(None, 0)
+        self.points[2] = Point(None, 0)
+        self.points[1] = Point(None, 0)
         self.points[0] = Point(checker_color2, 2)
         self.bar = {checker_color1: 0, checker_color2: 0}
         self.total_off = {checker_color1: 0, checker_color2: 0}
@@ -26,7 +42,7 @@ class Board:
             else:
                 self.bar[self.checker_color1] += 1
         else:
-            assert self.points[point].can_add_checker(checker_color)
+            print(self.points[point])
             self.points[point].add_checker(checker_color)
 
     def has_checkers_on_bar(self, checker_color):
