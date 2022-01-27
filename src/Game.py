@@ -30,21 +30,18 @@ class Game:
             self.dice.append(self.dice[0])
             self.dice.append(self.dice[0])
 
-    def _get_user_input(self):
-        roll = -1
+    def can_take_off_bar(self):
+        can_take_off_bar = False
+        for roll in self.dice:
+            if self.board.can_take_off_bar(self.turn, roll):
+                can_take_off_bar = True
+                break
+        return can_take_off_bar
+
+    def _get_move_input(self):
+        roll = self._get_roll_input()
         point = -1
-        valid_roll = False
         valid_point = False
-        while not valid_roll:
-            roll = input("Enter a dice roll: ")
-            if not roll.isdigit():
-                print("Roll needs to be a digit.")
-                continue
-            roll = int(roll)
-            if roll not in self.dice:
-                print("Roll needs to match a dice roll.")
-                continue
-            valid_roll = True
         while not valid_point:
             point = input("Enter a point number: ")
             if not point.isdigit():
@@ -60,16 +57,46 @@ class Game:
             valid_point = True
         return point, roll
 
+    def _get_roll_input(self):
+        roll = -1
+        valid_roll = False
+        while not valid_roll:
+            if len(self.dice) == 1:
+                roll = self.dice[0]
+                break
+            roll = input("Enter a dice roll: ")
+            if not roll.isdigit():
+                print("Roll needs to be a digit.")
+                continue
+            roll = int(roll)
+            if roll not in self.dice:
+                print("Roll needs to match a dice roll.")
+                continue
+            valid_roll = True
+        return roll
+
     def toggle_turn(self):
         if self.turn == self.player1:
             self.turn = self.player2
         else:
             self.turn = self.player1
 
-    def move(self):
-        for _ in range(2):
+    def bar(self):
+        while self.board.has_checkers_on_bar(self.turn):
             print(self)
-            point, roll = self._get_user_input()
+            if not self.can_take_off_bar():
+                self.dice = []
+                return
+            roll = self._get_roll_input()
+            if self.board.can_take_off_bar(self.turn, roll):
+                self.board.take_off_bar(self.turn, roll)
+                self.dice.remove(roll)
+
+    def move(self):
+        total_moves = len(self.dice)
+        for _ in range(total_moves):
+            print(self)
+            point, roll = self._get_move_input()
             self.board.move(self.turn, point, roll)
             self.dice.remove(roll)
 
@@ -79,6 +106,7 @@ class Game:
         while not self.board.is_winner(self.turn):
             self.toggle_turn()
             self.roll()
+            self.bar()
             self.move()
         print("Winner is " + self.turn + "!")
 
