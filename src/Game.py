@@ -111,6 +111,7 @@ class Game:
             self.roll()
             self.bar()
             self.move()
+        print(self)
         print(self.turn + " WINS!!!")
 
     def __str__(self):
