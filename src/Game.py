@@ -51,7 +51,7 @@ class Game:
             if point < 0 or point > 23:
                 print("Point needs to be between 0 and 23.")
                 continue
-            if not self.board.can_move(self.turn, point, roll):
+            if not self.board.can_move(self.turn, point, roll) and not self.board.can_bear_off(self.turn, point, roll):
                 print("Cannot move checker at this point.")
                 continue
             valid_point = True
@@ -97,7 +97,10 @@ class Game:
         for _ in range(total_moves):
             print(self)
             point, roll = self._get_move_input()
-            self.board.move(self.turn, point, roll)
+            if self.board.can_bear_off(self.turn, point, roll):
+                self.board.bear_off(self.turn, point, roll)
+            else:
+                self.board.move(self.turn, point, roll)
             self.dice.remove(roll)
 
     def play(self):
@@ -108,7 +111,7 @@ class Game:
             self.roll()
             self.bar()
             self.move()
-        print("Winner is " + self.turn + "!")
+        print(self.turn + " WINS!!!")
 
     def __str__(self):
         game_string = "-----------------------------------------\n"

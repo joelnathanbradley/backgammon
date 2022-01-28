@@ -31,6 +31,32 @@ class Board:
         self.points[2] = Point(None, 0)
         self.points[1] = Point(None, 0)
         self.points[0] = Point(checker_color2, 2)
+
+        # self.points[23] = Point(checker_color2, 2)
+        # self.points[22] = Point(checker_color2, 2)
+        # self.points[21] = Point(checker_color2, 2)
+        # self.points[20] = Point(checker_color2, 2)
+        # self.points[19] = Point(checker_color2, 2)
+        # self.points[18] = Point(checker_color2, 2)
+        # self.points[17] = Point(checker_color2, 2)
+        # self.points[16] = Point(checker_color2, 1)
+        # self.points[15] = Point(None, 0)
+        # self.points[14] = Point(None, 0)
+        # self.points[13] = Point(None, 0)
+        # self.points[12] = Point(None, 0)
+        # self.points[11] = Point(None, 0)
+        # self.points[10] = Point(None, 0)
+        # self.points[9] = Point(None, 0)
+        # self.points[8] = Point(None, 0)
+        # self.points[7] = Point(checker_color1, 1)
+        # self.points[6] = Point(checker_color1, 2)
+        # self.points[5] = Point(checker_color1, 2)
+        # self.points[4] = Point(checker_color1, 2)
+        # self.points[3] = Point(checker_color1, 2)
+        # self.points[2] = Point(checker_color1, 2)
+        # self.points[1] = Point(checker_color1, 2)
+        # self.points[0] = Point(checker_color1, 2)
+
         self.bar = {checker_color1: 0, checker_color2: 0}
         self.total_off = {checker_color1: 0, checker_color2: 0}
 
@@ -59,7 +85,7 @@ class Board:
             if self.points[point].checker_color == checker_color:
                 total_checkers_home += self.points[point].checker_count
         total_checkers_home += self.total_off[checker_color]
-        return not (total_checkers_home != 15)
+        return total_checkers_home == 15
 
     def is_winner(self, checker_color):
         assert (checker_color == self.checker_color1 or checker_color == self.checker_color2)
@@ -121,13 +147,15 @@ class Board:
         if checker_color == self.checker_color1:
             spaces *= -1
         point_ahead = point + spaces
-        if point_ahead >= 0 or point_ahead < 24:
+        if 0 <= point_ahead < 24:
             return False
         if not self.has_all_checkers_home(checker_color):
             return False
-        if self.can_move(checker_color, point, spaces):
-            return False
         if not self.points[point].can_remove_checker(checker_color):
+            return False
+        if checker_color == self.checker_color1 and point_ahead >= 0:
+            return False
+        if checker_color == self.checker_color2 and point_ahead < 24:
             return False
         return True
 
