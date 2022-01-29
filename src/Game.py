@@ -92,10 +92,20 @@ class Game:
                 self.board.take_off_bar(self.turn, roll)
                 self.dice.remove(roll)
 
+    def can_move(self):
+        for point in range(0, 24):
+            for roll in self.dice:
+                if self.board.can_move(self.turn, point, roll):
+                    return True
+        return False
+
     def move(self):
         total_moves = len(self.dice)
         for _ in range(total_moves):
             print(self)
+            if not self.can_move():
+                self.dice = []
+                return
             point, roll = self._get_move_input()
             if self.board.can_bear_off(self.turn, point, roll):
                 self.board.bear_off(self.turn, point, roll)
